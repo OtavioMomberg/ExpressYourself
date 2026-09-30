@@ -16,7 +16,7 @@ class const PrivacyScreen({
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppThemes.appBar,
-      backgroundColor: AppThemes.blueFinal,
+      backgroundColor: AppThemes.blueLight2,
       body: FormattedContainer(
         child: SafeArea(
           child: Column(
@@ -24,7 +24,7 @@ class const PrivacyScreen({
             children: <Widget>[
               const Text(
                 "Privacidade",
-                style: TextStyle(color: AppThemes.fontColor, fontSize: 30),
+                style: TextStyle(color: AppThemes.textBlueDark, fontSize: 30),
               ),
               const SizedBox(height: 20),
               Container(
@@ -32,7 +32,7 @@ class const PrivacyScreen({
                 padding: const .all(10),
                 decoration: BoxDecoration(
                   borderRadius: const .all(.circular(12)),
-                  border: .all(color: AppThemes.fontColor),
+                  border: .all(color: AppThemes.textBlueDark),
                 ),
                 child: const Text(
                   "Esse aplicativo não armazena qualquer tipo "
@@ -46,7 +46,7 @@ class const PrivacyScreen({
                   "com o propósito desse aplicativo e para garantir "
                   "a privacidade do conteúdo escrito.",
                   textAlign: .justify,
-                  style: TextStyle(color: AppThemes.fontColor),
+                  style: TextStyle(color: AppThemes.textBlueDark),
                 ),
               ),
               FractionallySizedBox(
@@ -54,7 +54,7 @@ class const PrivacyScreen({
                 child: Button(
                   label: "Confirmar",
                   borderRadius: const .all(.circular(12)),
-                  onTap: () async {
+                  onPressed: () async {
                     audioService.playButtonAudio();
                     await verifyPrivacy.changePrefs();
 

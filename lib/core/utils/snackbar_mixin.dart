@@ -21,6 +21,7 @@ mixin SnackbarMixin {
       behavior: behavior ?? .floating,
       margin: margin,
       padding: padding ?? const .all(10),
+      duration: const Duration(milliseconds: 1250)
     );
   }
 }

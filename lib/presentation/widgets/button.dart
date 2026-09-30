@@ -1,42 +1,33 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:message_app/core/themes/app_themes.dart';
 
-class Button extends StatelessWidget {
-  final String label;
-  final BorderRadius borderRadius;
-  final Widget? icon;
-  final IconAlignment? iconAlignment;
-  final void Function()? onTap;
-
-  const new({
-    required this.label,
-    required this.borderRadius,
-    this.icon,
-    this.iconAlignment,
-    this.onTap,
-    super.key,
-  });
-
+class const Button({
+  required final String label,
+  required final BorderRadius borderRadius,
+  final Widget? icon,
+  final IconAlignment? iconAlignment,
+  final void Function()? onPressed,
+  super.key,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: borderRadius,
-        border: .all(
-          color: AppThemes.fontColor.withValues(alpha: .7)
-        ),
-      ),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxHeight: 60, minHeight: 50),
       child: TextButton.icon(
         icon: icon,
         iconAlignment: iconAlignment,
-        onPressed: () {
-          if (onTap != null) { onTap!(); }
-        },
+        style: TextButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: borderRadius,
+            side: BorderSide(
+              color: AppThemes.textBlueDark.withValues(alpha: .7),
+            ),
+          ),
+        ),
+        onPressed: () => onPressed != null ? onPressed!() : null,
         label: Text(
           label,
-          style: const TextStyle(
-            color: AppThemes.fontColor
-          ),
+          style: const TextStyle(color: AppThemes.textBlueDark),
         ),
       ),
     );

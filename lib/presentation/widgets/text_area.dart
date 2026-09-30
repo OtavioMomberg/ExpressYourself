@@ -1,20 +1,13 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:message_app/core/themes/app_themes.dart';
 
-class TextArea extends StatelessWidget {
-  final String? label;
-  final Color color;
-  final TextEditingController controller;
-  final FocusNode node;
-
-  const new({
-    required this.controller,
-    required this.color,
-    required this.node,
-    this.label, 
+class const TextArea({
+    required final TextEditingController controller,
+    required final Color color,
+    required final FocusNode node,
+    final String? label, 
     super.key
-  });
-
+  }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(

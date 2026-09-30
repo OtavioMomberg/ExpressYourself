@@ -16,13 +16,21 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
   final audioService = AudioService.instance();
   final controller = TextEditingController();
   final textNode = FocusNode();
-  Color textColor = AppThemes.fontColor;
+  Color textColor = AppThemes.textBlueDark;
+
+  @override
+  void dispose() {
+    audioService.buttonPlayer.dispose();
+    audioService.colorPlayer.dispose();
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppThemes.appBar,
-      backgroundColor: AppThemes.blueFinal,
+      backgroundColor: AppThemes.blueLight2,
       body: FormattedContainer(
         child: SafeArea(
           child: Column(
@@ -30,51 +38,34 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
             children: <Widget>[
               const Text(
                 "Cores de Fonte",
-                style: TextStyle(color: AppThemes.fontColor, fontSize: 20),
+                style: TextStyle(color: AppThemes.textBlueDark, fontSize: 20),
               ),
-              Container(
-                width: .infinity,
-                padding: const .all(10),
-                child: Column(
-                  spacing: 8,
-                  children: <Widget>[
-                    ColorSelector(
-                      colors: AppThemes.primaryColorSet,
-                      onTap: ({required index}) {
-                        setState(() {
-                          textColor = AppThemes.primaryColorSet[index];
-                        });
-                      },
-                    ),
-                    ColorSelector(
-                      colors: AppThemes.secondaryColorSet,
-                      onTap: ({required index}) {
-                        setState(() {
-                          textColor = AppThemes.secondaryColorSet[index];
-                        });
-                      },
-                    ),
-                  ],
-                ),
+              ColorSelector(
+                onTap: ({required index}) {
+                  setState(() {
+                    textColor = AppThemes.primaryColorSet[index];
+                  });
+                },
               ),
               Expanded(
                 child: DragTarget<Color>(
-                  builder: (context, candidateItens, _) {
+                  builder: (context, item, _) {
                     return TextArea(
                       label: "Expresse seus pensamentos...",
                       controller: controller,
-                      color: candidateItens.isEmpty
+                      color: item.isEmpty
                         ? textColor
-                        : candidateItens.first!,
+                        : item.first!,
                       node: textNode,
                     );
                   },
                   onAcceptWithDetails: (details) async {
                     setState(() => textColor = details.data);
                     audioService.playColorAudio();
-                  },  
+                  },
                 ),
               ),
+              const SizedBox(height: 2),
               ButtonRow(
                 sendButton: _sendLetter,
                 copyButton: _copyText,
@@ -93,25 +84,26 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
 
   void _sendLetter() {
     if (controller.text.isEmpty) {
+      audioService.playColorAudio();
       getSnackbar(
-        context: context, 
-        label: "Não é possível enviar conteúdo vazio.", 
-        labelColor: AppThemes.fontColor, 
+        context: context,
+        label: "Não é possível enviar conteúdo vazio.",
+        labelColor: AppThemes.textBlueDark,
         backgroundColor: AppThemes.white,
         behavior: .floating,
-        margin: const .only(bottom: 85, left: 12, right: 12),
+        margin: const .only(bottom: 85, left: 14, right: 14),
         padding: const .all(15),
       );
       return;
     }
     audioService.playButtonAudio();
 
-    if (!mounted) { return; }
+    if (!mounted) {
+      return;
+    }
     Navigator.push(
       context,
-      AppRoutes.getRoute(
-        screen: const SendLetterScreen()
-      ),
+      AppRoutes.getRoute(screen: const SendLetterScreen()),
     ).then((_) {
       textNode.unfocus();
       if (controller.text.isNotEmpty) {
@@ -123,28 +115,24 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
   void _copyText() async {
     audioService.playButtonAudio();
 
-    if (controller.text.isEmpty) { return; }
+    if (controller.text.isEmpty) {
+      return;
+    }
 
     await Clipboard.setData(ClipboardData(text: controller.text));
 
-    if (!mounted) { return; }
+    if (!mounted) {
+      return;
+    }
     getSnackbar(
-      context: context, 
-      label: "Texto copiado para área de transferências!", 
-      labelColor: AppThemes.fontColor, 
+      context: context,
+      label: "Texto copiado para área de transferências!",
+      labelColor: AppThemes.textBlueDark,
       backgroundColor: AppThemes.white,
       behavior: .floating,
-      margin: const .only(bottom: 85, left: 12, right: 12),
+      margin: const .only(bottom: 85, left: 14, right: 14),
       padding: const .all(15),
     );
     textNode.unfocus();
-  }
-
-  @override
-  void dispose() {
-    audioService.buttonPlayer.dispose();
-    audioService.colorPlayer.dispose();
-    controller.dispose();
-    super.dispose();
   }
 }

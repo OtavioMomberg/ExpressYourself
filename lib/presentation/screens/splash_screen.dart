@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     init();
   }
 
-  void init() async {
+  Future<void> init() async {
     audioService.init();
     await userPrefs.loadPrefs();
   }
@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppThemes.appBar,
-      backgroundColor: AppThemes.blueFinal,
+      backgroundColor: AppThemes.blueLight2,
       body: FormattedContainer(
         child: SafeArea(
           child: Column(
@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: DefaultTextStyle(
                   style: const TextStyle(
                     fontSize: 28,
-                    color: AppThemes.fontColor,
+                    color: AppThemes.textBlueDark,
                     fontFamily: "ChelseaMarket",
                   ),
                   child: AnimatedTextKit(
@@ -60,11 +60,11 @@ class _SplashScreenState extends State<SplashScreen> {
                         context,
                         AppRoutes.getRoute(
                           screen: userPrefs.showPrivacyScreen
-                            ? PrivacyScreen(
-                                audioService: audioService,
-                                verifyPrivacy: userPrefs,
-                              )
-                            : const HomeScreen(),
+                              ? PrivacyScreen(
+                                  audioService: audioService,
+                                  verifyPrivacy: userPrefs,
+                                )
+                              : const HomeScreen(),
                         ),
                       );
                     },

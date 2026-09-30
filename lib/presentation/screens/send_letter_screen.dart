@@ -9,7 +9,8 @@ class const SendLetterScreen({super.key}) extends StatefulWidget {
   State<SendLetterScreen> createState() => _SendLetterScreenState();
 }
 
-class _SendLetterScreenState extends State<SendLetterScreen> with SnackbarMixin {
+class _SendLetterScreenState extends State<SendLetterScreen>
+    with SnackbarMixin {
   bool init = false;
 
   @override
@@ -29,7 +30,7 @@ class _SendLetterScreenState extends State<SendLetterScreen> with SnackbarMixin 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppThemes.appBar,
-      backgroundColor: AppThemes.blueFinal,
+      backgroundColor: AppThemes.blueLight2,
       body: FormattedContainer(
         child: Center(
           child: AnimatedScale(
@@ -39,12 +40,12 @@ class _SendLetterScreenState extends State<SendLetterScreen> with SnackbarMixin 
               duration: const Duration(milliseconds: 600),
               opacity: init ? 0.0 : 1.0,
               child: const ImageWidget(
-                imagePath: "assets/images/letter_img.png"
-              )
-            )
-          )
-        )
-      )
+                imagePath: "assets/images/letter_img.png",
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -52,12 +53,12 @@ class _SendLetterScreenState extends State<SendLetterScreen> with SnackbarMixin 
     Navigator.pop(context);
 
     getSnackbar(
-      context: context, 
-      label: "Carta Enviada!", 
-      labelColor: AppThemes.fontColor, 
+      context: context,
+      label: "Carta Enviada!",
+      labelColor: AppThemes.textBlueDark,
       backgroundColor: AppThemes.white,
       behavior: .floating,
-      margin: const .only(bottom: 85, left: 12, right: 12),
+      margin: const .only(bottom: 85, left: 14, right: 14),
       padding: const .all(15),
     );
   }

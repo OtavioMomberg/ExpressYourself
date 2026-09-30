@@ -1,13 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 
-class ImageWidget extends StatelessWidget {
-  final String imagePath;
-
-  const ImageWidget({
-    required this.imagePath, 
-    super.key
-  });
-
+class const ImageWidget({required final String imagePath, super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(

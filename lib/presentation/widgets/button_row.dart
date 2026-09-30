@@ -2,18 +2,12 @@ import 'package:material_ui/material_ui.dart';
 import 'package:message_app/core/themes/app_themes.dart';
 import 'package:message_app/presentation/widgets/button.dart';
 
-class ButtonRow extends StatelessWidget {
-  final VoidCallback sendButton;
-  final VoidCallback copyButton;
-  final VoidCallback clearButton;
-
-  const new({
-    required this.sendButton,
-    required this.copyButton,
-    required this.clearButton,
-    super.key
-  });
-
+class const ButtonRow({
+  required final VoidCallback sendButton,
+  required final VoidCallback copyButton,
+  required final VoidCallback clearButton,
+  super.key,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -21,27 +15,27 @@ class ButtonRow extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: Button(
-            label: "Limpar", 
+            label: "Limpar",
             borderRadius: const .all(.circular(50)),
-            icon: const Icon(Icons.delete, color: AppThemes.fontColor),
+            icon: const Icon(Icons.delete, color: AppThemes.textBlueDark),
             iconAlignment: .start,
-            onTap: clearButton,
+            onPressed: clearButton,
           ),
         ),
         Expanded(
           child: Button(
-            label: "Enviar", 
+            label: "Enviar",
             borderRadius: const .all(.circular(12)),
-            onTap: sendButton,
+            onPressed: sendButton,
           ),
         ),
         Expanded(
           child: Button(
-            label: "Copiar", 
+            label: "Copiar",
             borderRadius: const .all(.circular(50)),
-            icon: const Icon(Icons.copy, color: AppThemes.fontColor),
+            icon: const Icon(Icons.copy, color: AppThemes.textBlueDark),
             iconAlignment: .end,
-            onTap: copyButton,
+            onPressed: copyButton,
           ),
         ),
       ],
