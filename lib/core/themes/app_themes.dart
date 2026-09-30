@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
-class AppThemes {
+final class AppThemes._() {
   static const white = Color.fromARGB(255, 228, 247, 255);
   static const blueMiddle = Color.fromARGB(255, 212, 242, 255);
   static const blueFinal = Color.fromARGB(255, 148, 221, 255);

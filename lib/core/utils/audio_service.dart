@@ -1,15 +1,13 @@
 import 'package:audioplayers/audioplayers.dart';
 
-class AudioService {
+final class AudioService._() {
   final buttonPlayer = AudioPlayer();
   final colorPlayer = AudioPlayer();
 
-  final _buttonAudio = "audios/button_click.mp3";
-  final _colorAudio = "audios/color_placement.mp3";
+  static const _buttonAudio = "audios/button_click.mp3";
+  static const _colorAudio = "audios/color_placement.mp3";
 
-  new _();
   static final _instance = AudioService._();
-
   factory instance() => _instance;
 
   Future<void> init() async {

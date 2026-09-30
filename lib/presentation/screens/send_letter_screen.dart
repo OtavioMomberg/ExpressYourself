@@ -1,12 +1,10 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:message_app/core/themes/app_themes.dart';
 import 'package:message_app/core/utils/snackbar_mixin.dart';
+import 'package:message_app/core/themes/app_themes.dart';
 import 'package:message_app/presentation/widgets/formatted_container.dart';
 import 'package:message_app/presentation/widgets/image_widget.dart';
 
-class SendLetterScreen extends StatefulWidget {
-  const new({super.key});
-
+class const SendLetterScreen({super.key}) extends StatefulWidget {
   @override
   State<SendLetterScreen> createState() => _SendLetterScreenState();
 }

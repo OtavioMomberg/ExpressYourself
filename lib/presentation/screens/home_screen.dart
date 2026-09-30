@@ -1,18 +1,13 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:message_app/core/utils/audio_service.dart';
+import 'package:message_app/core/utils/snackbar_mixin.dart';
 import 'package:message_app/core/routes/app_routes.dart';
 import 'package:message_app/core/themes/app_themes.dart';
-import 'package:message_app/core/utils/snackbar_mixin.dart';
-import 'package:message_app/presentation/widgets/button_row.dart';
-import 'package:message_app/presentation/widgets/color_selector.dart';
-import 'package:message_app/presentation/widgets/formatted_container.dart';
-import 'package:message_app/presentation/widgets/text_area.dart';
+import 'package:message_app/presentation/widgets/home_widgets.dart';
 import 'package:message_app/presentation/screens/send_letter_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const new({super.key});
-
+class const HomeScreen({super.key}) extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }

@@ -17,9 +17,7 @@ void main() async {
   runApp(const ExpressYourself());
 }
 
-class ExpressYourself extends StatelessWidget {
-  const new({super.key});
-
+class const ExpressYourself({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
