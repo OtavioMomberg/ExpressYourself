@@ -139,17 +139,6 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _copyText() async {
-    showPrivacyDialog(
-        context: context,
-        onPressed: () async {
-          audioService.playButtonAudio();
-          await verifyPrivacy.changePrefs();
-
-          if (!mounted) { return; }
-          Navigator.pop(context);
-        },
-      );  
-
     audioService.playButtonAudio();
 
     if (controller.text.isEmpty) { return; }
