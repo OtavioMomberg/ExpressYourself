@@ -1,12 +1,13 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:message_app/core/utils/user_preferences.dart';
+import 'package:message_app/core/utils/verify_privacy_terms.dart';
 import 'package:message_app/core/utils/audio_service.dart';
 import 'package:message_app/core/routes/app_routes.dart';
 import 'package:message_app/core/themes/app_themes.dart';
 import 'package:message_app/presentation/widgets/formatted_container.dart';
 import 'package:message_app/presentation/screens/home_screen.dart';
-import 'package:message_app/presentation/screens/privacy_screen.dart';
+
+//import 'package:message_app/presentation/screens/privacy_screen.dart';
 
 class const SplashScreen({super.key}) extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class const SplashScreen({super.key}) extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final userPrefs = VerifyPrivacyScreen.instance();
+  final userPrefs = VerifyPrivacyTerms.instance();
   final audioService = AudioService.instance();
 
   @override
@@ -58,15 +59,19 @@ class _SplashScreenState extends State<SplashScreen> {
                     onFinished: () {
                       Navigator.pushReplacement(
                         context,
+                        AppRoutes.getRoute(screen: const HomeScreen()),
+                      );
+                      /*Navigator.pushReplacement(
+                        context,
                         AppRoutes.getRoute(
                           screen: userPrefs.showPrivacyScreen
-                              ? PrivacyScreen(
-                                  audioService: audioService,
-                                  verifyPrivacy: userPrefs,
-                                )
-                              : const HomeScreen(),
+                            ? PrivacyScreen(
+                                audioService: audioService,
+                                verifyPrivacy: userPrefs,
+                              )
+                            : const HomeScreen(),
                         ),
-                      );
+                      );*/
                     },
                   ),
                 ),

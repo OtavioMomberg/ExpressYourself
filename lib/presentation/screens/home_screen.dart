@@ -4,19 +4,42 @@ import 'package:message_app/core/utils/audio_service.dart';
 import 'package:message_app/core/utils/snackbar_mixin.dart';
 import 'package:message_app/core/routes/app_routes.dart';
 import 'package:message_app/core/themes/app_themes.dart';
+import 'package:message_app/core/utils/verify_privacy_terms.dart';
 import 'package:message_app/presentation/widgets/home_widgets.dart';
 import 'package:message_app/presentation/screens/send_letter_screen.dart';
+import 'package:message_app/presentation/widgets/privacy_dialog.dart';
 
 class const HomeScreen({super.key}) extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SnackbarMixin, PrivacyDialog {
   final audioService = AudioService.instance();
+  final verifyPrivacy = VerifyPrivacyTerms.instance();
   final controller = TextEditingController();
   final textNode = FocusNode();
   Color textColor = AppThemes.textBlueDark;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!verifyPrivacy.showPrivacyScreen) { return; }
+      showPrivacyDialog(
+        context: context,
+        onPressed: () async {
+          audioService.playButtonAudio();
+          await verifyPrivacy.changePrefs();
+
+          if (!mounted) { return; }
+          Navigator.pop(context);
+        },
+      );  
+    });
+  }
 
   @override
   void dispose() {
@@ -43,7 +66,12 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
               ColorSelector(
                 onTap: ({required index}) {
                   setState(() {
-                    textColor = AppThemes.primaryColorSet[index];
+                    if (index < 3) {
+                      textColor = AppThemes.primaryColorSet[index];
+                      return;
+                    }
+                    textColor = AppThemes.secondaryColorSet[
+                      (index~/indexFactor)-indexNormalizer];
                   });
                 },
               ),
@@ -53,9 +81,7 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
                     return TextArea(
                       label: "Expresse seus pensamentos...",
                       controller: controller,
-                      color: item.isEmpty
-                        ? textColor
-                        : item.first!,
+                      color: item.isEmpty ? textColor : item.first!,
                       node: textNode,
                     );
                   },
@@ -71,7 +97,9 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
                 copyButton: _copyText,
                 clearButton: () {
                   audioService.playButtonAudio();
-                  if (controller.text.isEmpty) { return; }
+                  if (controller.text.isEmpty) {
+                    return;
+                  }
                   controller.clear();
                 },
               ),
@@ -98,9 +126,7 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
     }
     audioService.playButtonAudio();
 
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) { return; }
     Navigator.push(
       context,
       AppRoutes.getRoute(screen: const SendLetterScreen()),
@@ -113,17 +139,24 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
   }
 
   void _copyText() async {
+    showPrivacyDialog(
+        context: context,
+        onPressed: () async {
+          audioService.playButtonAudio();
+          await verifyPrivacy.changePrefs();
+
+          if (!mounted) { return; }
+          Navigator.pop(context);
+        },
+      );  
+
     audioService.playButtonAudio();
 
-    if (controller.text.isEmpty) {
-      return;
-    }
+    if (controller.text.isEmpty) { return; }
 
     await Clipboard.setData(ClipboardData(text: controller.text));
 
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) { return; }
     getSnackbar(
       context: context,
       label: "Texto copiado para área de transferências!",

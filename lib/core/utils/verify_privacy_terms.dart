@@ -1,11 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-final class VerifyPrivacyScreen._() {
+final class VerifyPrivacyTerms._() {
   late SharedPreferencesWithCache prefs;
   bool _showPrivacyScreen = true;
 
-  static final _instance = VerifyPrivacyScreen._();
-  factory VerifyPrivacyScreen.instance() => _instance;
+  static final _instance = VerifyPrivacyTerms._();
+  factory VerifyPrivacyTerms.instance() => _instance;
 
   bool get showPrivacyScreen => _showPrivacyScreen;
 

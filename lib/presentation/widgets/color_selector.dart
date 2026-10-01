@@ -2,6 +2,9 @@ import 'package:material_ui/material_ui.dart';
 import 'package:message_app/core/themes/app_themes.dart';
 import 'package:message_app/presentation/widgets/draggable_color.dart';
 
+const indexFactor = 3;
+const indexNormalizer = 1;
+
 class const ColorSelector({
   required final void Function({required int index}) onTap,
   super.key
@@ -18,8 +21,16 @@ class const ColorSelector({
         child: Column(
           spacing: 8,
           children: <Widget>[
-            _ColorRow(colors: AppThemes.primaryColorSet, onTap: onTap),
-            _ColorRow(colors: AppThemes.secondaryColorSet, onTap: onTap)
+            _ColorRow(
+              colors: AppThemes.primaryColorSet, 
+              rowID: 1,
+              onTap: onTap
+            ),
+            _ColorRow(
+              colors: AppThemes.secondaryColorSet,
+              rowID: 2,
+              onTap: onTap
+            )
           ],
         ),
       ),
@@ -29,6 +40,7 @@ class const ColorSelector({
 
 class const _ColorRow({
   required final List<Color> colors,
+  required final int rowID,
   required final void Function({required int index}) onTap
 }) extends StatelessWidget {
   @override
@@ -42,7 +54,11 @@ class const _ColorRow({
               sides: 8, 
               pointRounding: 0.3
             ),
-            onTap: () => onTap(index: index),
+            onTap: () => onTap(
+              index: rowID == 2 
+                ? (index + indexNormalizer) * indexFactor 
+                : index
+              ),
             child: DraggableColor(
               color: colors[index]
             ),
