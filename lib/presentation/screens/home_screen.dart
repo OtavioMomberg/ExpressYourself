@@ -1,10 +1,9 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
-import 'package:message_app/core/utils/audio_service.dart';
+import 'package:message_app/core/di/home_di.dart';
 import 'package:message_app/core/utils/snackbar_mixin.dart';
 import 'package:message_app/core/routes/app_routes.dart';
 import 'package:message_app/core/themes/app_themes.dart';
-import 'package:message_app/core/utils/verify_privacy_terms.dart';
 import 'package:message_app/presentation/widgets/home_widgets.dart';
 import 'package:message_app/presentation/screens/send_letter_screen.dart';
 import 'package:message_app/presentation/widgets/privacy_dialog.dart';
@@ -16,8 +15,6 @@ class const HomeScreen({super.key}) extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SnackbarMixin, PrivacyDialog {
-  final audioService = AudioService.instance();
-  final verifyPrivacy = VerifyPrivacyTerms.instance();
   final controller = TextEditingController();
   final textNode = FocusNode();
   Color textColor = AppThemes.textBlueDark;
@@ -27,24 +24,25 @@ class _HomeScreenState extends State<HomeScreen>
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!verifyPrivacy.showPrivacyScreen) { return; }
+      if (!HomeDeps.verifyPrivacy.showPrivacyScreen) { return; }
       showPrivacyDialog(
         context: context,
         onPressed: () async {
-          audioService.playButtonAudio();
-          await verifyPrivacy.changePrefs();
+          HomeDeps.audioService.playButtonAudio();
+          await HomeDeps.verifyPrivacy.changePrefs();
 
           if (!mounted) { return; }
           Navigator.pop(context);
         },
-      );  
+      );
     });
   }
 
   @override
   void dispose() {
-    audioService.buttonPlayer.dispose();
-    audioService.colorPlayer.dispose();
+    HomeDeps.audioService.buttonPlayer.dispose();
+    HomeDeps.audioService.colorPlayer.dispose();
+    HomeDeps.wordCount.disposeWordNotifier().dispose();
     controller.dispose();
     super.dispose();
   }
@@ -61,47 +59,45 @@ class _HomeScreenState extends State<HomeScreen>
             children: <Widget>[
               const Text(
                 "Cores de Fonte",
-                style: TextStyle(color: AppThemes.textBlueDark, fontSize: 20),
+                style: TextStyle(
+                  color: AppThemes.textBlueDark, 
+                  fontSize: 20
+                ),
               ),
               ColorSelector(
                 onTap: ({required index}) {
                   setState(() {
-                    if (index < 3) {
+                    if (index < indexFactor) {
                       textColor = AppThemes.primaryColorSet[index];
                       return;
                     }
                     textColor = AppThemes.secondaryColorSet[
-                      (index~/indexFactor)-indexNormalizer];
+                      (index ~/ indexFactor) - indexNormalizer];
                   });
                 },
               ),
               Expanded(
                 child: DragTarget<Color>(
-                  builder: (context, item, _) {
+                  builder: (_, item, _) {
                     return TextArea(
                       label: "Expresse seus pensamentos...",
                       controller: controller,
                       color: item.isEmpty ? textColor : item.first!,
                       node: textNode,
+                      wordCount: HomeDeps.wordCount,
                     );
                   },
                   onAcceptWithDetails: (details) async {
                     setState(() => textColor = details.data);
-                    audioService.playColorAudio();
+                    HomeDeps.audioService.playColorAudio();
                   },
                 ),
               ),
-              const SizedBox(height: 2),
+              const SizedBox(height: 15),
               ButtonRow(
                 sendButton: _sendLetter,
                 copyButton: _copyText,
-                clearButton: () {
-                  audioService.playButtonAudio();
-                  if (controller.text.isEmpty) {
-                    return;
-                  }
-                  controller.clear();
-                },
+                clearButton: _clearText,
               ),
             ],
           ),
@@ -111,20 +107,9 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _sendLetter() {
-    if (controller.text.isEmpty) {
-      audioService.playColorAudio();
-      getSnackbar(
-        context: context,
-        label: "Não é possível enviar conteúdo vazio.",
-        labelColor: AppThemes.textBlueDark,
-        backgroundColor: AppThemes.white,
-        behavior: .floating,
-        margin: const .only(bottom: 85, left: 14, right: 14),
-        padding: const .all(15),
-      );
-      return;
-    }
-    audioService.playButtonAudio();
+    HomeDeps.audioService.playColorAudio();
+    if (controller.text.isEmpty) { return; }
+    HomeDeps.audioService.playButtonAudio();
 
     if (!mounted) { return; }
     Navigator.push(
@@ -134,14 +119,15 @@ class _HomeScreenState extends State<HomeScreen>
       textNode.unfocus();
       if (controller.text.isNotEmpty) {
         controller.clear();
+        HomeDeps.wordCount.resetWordNumber();
       }
     });
   }
 
   void _copyText() async {
-    audioService.playButtonAudio();
-
+    HomeDeps.audioService.playColorAudio();
     if (controller.text.isEmpty) { return; }
+    HomeDeps.audioService.playButtonAudio();
 
     await Clipboard.setData(ClipboardData(text: controller.text));
 
@@ -156,5 +142,14 @@ class _HomeScreenState extends State<HomeScreen>
       padding: const .all(15),
     );
     textNode.unfocus();
+  }
+
+  void _clearText() {
+    HomeDeps.audioService.playColorAudio();
+    if (controller.text.isEmpty) { return; }
+    HomeDeps.audioService.playButtonAudio();
+
+    HomeDeps.wordCount.resetWordNumber();
+    controller.clear();
   }
 }
