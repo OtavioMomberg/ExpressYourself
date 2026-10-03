@@ -9,8 +9,7 @@ class const SendLetterScreen({super.key}) extends StatefulWidget {
   State<SendLetterScreen> createState() => _SendLetterScreenState();
 }
 
-class _SendLetterScreenState extends State<SendLetterScreen>
-    with SnackbarMixin {
+class _SendLetterScreenState extends State<SendLetterScreen> with SnackbarMixin {
   bool init = false;
 
   @override

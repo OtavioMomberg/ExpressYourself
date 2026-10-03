@@ -1,10 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
-final class WordCount._() {
+final class WordCount {
   final _word = ValueNotifier<int>(0);
-
-  static final _instance = WordCount._();
-  factory instance() => _instance;
 
   ValueNotifier<int> get word => _word;
 

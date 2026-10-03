@@ -12,7 +12,7 @@ final class AppRoutes._() {
             parent: animation, 
             curve: Curves.easeInOut
           ),
-          child: child,
+          child: child
         );
       } 
     );

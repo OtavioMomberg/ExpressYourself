@@ -15,20 +15,22 @@ mixin PrivacyDialog {
       title: const Center(
         child: Text(
           "Privacidade",
-          style: TextStyle(color: AppThemes.textBlueDark),
-        ),
+          style: TextStyle(
+            color: AppThemes.textBlueDark
+          )
+        )
       ),
       content: Column(
         spacing: 15,
         mainAxisSize: .min,
         children: <Widget>[
-          _PrivacyInfo(),
+          const _PrivacyInfo(),
           FractionallySizedBox(
             widthFactor: 0.6,
             child: Button(
               label: "Confirmar",
               borderRadius: const .all(.circular(12)),
-              onPressed: () async => await onPressed(),
+              onPressed: () async => await onPressed()
             ),
           ),
         ],
@@ -53,10 +55,10 @@ class const _PrivacyInfo() extends StatelessWidget {
             color: AppThemes.textBlueDark.withValues(alpha: .7)
           ),
         ),
-        child: SingleChildScrollView(
+        child: const SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              const Text(
+              Text(
                 "Esse aplicativo não armazena qualquer tipo "
                 "de conteúdo desenvolvido pelo usuário por "
                 "meio da escrita. É possível apenas copiar "
@@ -66,7 +68,7 @@ class const _PrivacyInfo() extends StatelessWidget {
                 "Todo texto escrito, quando enviado é apagado, "
                 "ocorre apenas uma simulação de envio de acordo "
                 "com o propósito desse aplicativo e para garantir "
-                "a privacidade do conteúdo escrito.",
+                "a privacidade do conteúdo escrito. ",
                 textAlign: .justify,
                 style: TextStyle(color: AppThemes.textBlueDark),
               ),

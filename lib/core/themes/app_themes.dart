@@ -41,6 +41,8 @@ final class AppThemes._() {
 
   static final inputBoarder = OutlineInputBorder(
     borderRadius: const .all(.circular(12)),
-    borderSide: BorderSide(color: AppThemes.textBlueDark.withValues(alpha: .6)),
+    borderSide: BorderSide(
+      color: AppThemes.textBlueDark.withValues(alpha: .6)
+    ),
   );
 }

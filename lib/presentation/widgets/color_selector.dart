@@ -5,6 +5,8 @@ import 'package:message_app/presentation/widgets/draggable_color.dart';
 const indexFactor = 3;
 const indexNormalizer = 1;
 
+enum RowId { first, second }
+
 class const ColorSelector({
   required final void Function({required int index}) onTap,
   super.key
@@ -23,24 +25,24 @@ class const ColorSelector({
           children: <Widget>[
             _ColorRow(
               colors: AppThemes.primaryColorSet, 
-              rowID: 1,
+              rowID: .first,
               onTap: onTap
             ),
             _ColorRow(
               colors: AppThemes.secondaryColorSet,
-              rowID: 2,
+              rowID: .second,
               onTap: onTap
             )
-          ],
-        ),
-      ),
+          ]
+        )
+      )
     );
   }
 }
 
 class const _ColorRow({
   required final List<Color> colors,
-  required final int rowID,
+  required final RowId rowID,
   required final void Function({required int index}) onTap
 }) extends StatelessWidget {
   @override
@@ -55,9 +57,9 @@ class const _ColorRow({
               pointRounding: 0.3
             ),
             onTap: () => onTap(
-              index: rowID == 2 
-                ? (index + indexNormalizer) * indexFactor 
-                : index
+              index: (rowID == .first)
+                ? index 
+                : (index + indexNormalizer) * indexFactor
               ),
             child: DraggableColor(
               color: colors[index]

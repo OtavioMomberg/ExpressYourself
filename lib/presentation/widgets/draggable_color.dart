@@ -2,7 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:message_app/core/themes/app_themes.dart';
 
 class const DraggableColor({required final Color color, super.key})
-    extends StatelessWidget {
+  extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Draggable<Color>(

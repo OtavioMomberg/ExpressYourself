@@ -35,10 +35,10 @@ class const ButtonRow({
             borderRadius: const .all(.circular(50)),
             icon: const Icon(Icons.copy, color: AppThemes.textBlueDark),
             iconAlignment: .end,
-            onPressed: copyButton,
-          ),
-        ),
-      ],
+            onPressed: copyButton
+          )
+        )
+      ]
     );
   }
 }
